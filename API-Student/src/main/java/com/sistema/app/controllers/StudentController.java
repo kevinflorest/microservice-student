@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.support.WebExchangeBindException;
-import com.sistema.app.models.documents.Student;
-import com.sistema.app.models.services.StudentService;
+
+import com.sistema.app.models.Student;
+import com.sistema.app.services.StudentService;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -73,36 +75,43 @@ public class StudentController {
 				.body(service.findAllStudentByName(firstName)));
 	}
 	
+
 	@PostMapping
-	public Mono<ResponseEntity<Map<String, Object>>> saveStudent(@Valid @RequestBody Mono<Student> monoStudent){
-		
-		Map<String, Object> response = new HashMap<String, Object>();
-		
-		return monoStudent.flatMap(student -> {
-			return service.saveStudent(student).map(s-> {
-				response.put("student", s);
-				response.put("mensaje", "Estudiante registrado con éxito");
-				response.put("timestamp", new Date());
-				return ResponseEntity
-					.created(URI.create("/api/student/".concat(s.getId())))
-					.contentType(MediaType.APPLICATION_JSON_UTF8)
-					.body(response);
-				});
-			
-		}).onErrorResume(t -> {
-			return Mono.just(t).cast(WebExchangeBindException.class)
-					.flatMap(e -> Mono.just(e.getFieldErrors()))
-					.flatMapMany(Flux::fromIterable)
-					.map(fieldError -> "El campo "+fieldError.getField() + " " + fieldError.getDefaultMessage())
-					.collectList()
-					.flatMap(list -> {
-						response.put("errors", list);
-						response.put("timestamp", new Date());
-						response.put("status", HttpStatus.BAD_REQUEST.value());
-						return Mono.just(ResponseEntity.badRequest().body(response));
-					});		
-		});
+	public Mono<Student> saveStudent (@Valid @RequestBody Student student)
+	{
+		return service.saveStudent(student);
 	}
+	
+//	@PostMapping
+//	public Mono<ResponseEntity<Map<String, Object>>> saveStudent(@Valid @RequestBody Mono<Student> monoStudent){
+//		
+//		Map<String, Object> response = new HashMap<String, Object>();
+//		
+//		return monoStudent.flatMap(student -> {
+//			return service.saveStudent(student).map(s-> {
+//				response.put("student", s);
+//				response.put("mensaje", "Estudiante registrado con éxito");
+//				response.put("timestamp", new Date());
+//				return ResponseEntity
+//					.created(URI.create("/api/student/".concat(s.getId())))
+//					.contentType(MediaType.APPLICATION_JSON_UTF8)
+//					.body(response);
+//				});
+//			
+//		}).onErrorResume(t -> {
+//			return Mono.just(t).cast(WebExchangeBindException.class)
+//					.flatMap(e -> Mono.just(e.getFieldErrors()))
+//					.flatMapMany(Flux::fromIterable)
+//					.map(fieldError -> "El campo "+fieldError.getField() + " " + fieldError.getDefaultMessage())
+//					.collectList()
+//					.flatMap(list -> {
+//						response.put("errors", list);
+//						response.put("timestamp", new Date());
+//						response.put("status", HttpStatus.BAD_REQUEST.value());
+//						return Mono.just(ResponseEntity.badRequest().body(response));
+//					});		
+//		});
+//	}
 	
 	@PutMapping("/{id}")
 	public Mono<ResponseEntity<Student>> updateStudent(@RequestBody Student student, @PathVariable String id)
