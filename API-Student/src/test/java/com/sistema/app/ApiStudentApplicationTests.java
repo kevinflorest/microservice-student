@@ -23,29 +23,29 @@ public class ApiStudentApplicationTests {
 	@Autowired
 	private StudentService service;
 	
-	@Test
-	public void listStudent() {
-		client.get().uri("/api/student/")
-		.accept(MediaType.APPLICATION_JSON_UTF8)
-		.exchange()
-		.expectStatus().isOk()
-		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-		.expectBodyList(Student.class);
-	}
-	
-	@Test
-	public void findByStudent() {
-		
-		Student student = service.findByIdStudent("5da744790881d54f1cfc59eb").block();
-		
-		client.get().uri("/api/student/{id}", Collections.singletonMap("id", student.getId()))
-		.accept(MediaType.APPLICATION_JSON_UTF8)
-		.exchange()
-		.expectStatus().isOk()
-		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-		.expectBodyList(Student.class);
-	}
-	
-	
+//	@Test
+//	public void listStudent() {
+//		client.get().uri("/api/student/")
+//		.accept(MediaType.APPLICATION_JSON_UTF8)
+//		.exchange()
+//		.expectStatus().isOk()
+//		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+//		.expectBodyList(Student.class);
+//	}
+//	
+//	@Test
+//	public void findByStudent() {
+//		
+//		Student student = service.findByIdStudent("asds").block();
+//		
+//		client.get().uri("/api/student/{id}", Collections.singletonMap("id", student.getId()))
+//		.accept(MediaType.APPLICATION_JSON_UTF8)
+//		.exchange()
+//		.expectStatus().isOk()
+//		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+//		.expectBodyList(Student.class);
+//	}
+//	
+//	
 
 }
