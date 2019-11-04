@@ -34,7 +34,7 @@ public class ApiStudentApplicationTests {
 	@Test
 	public void findByStudent() {
 		
-		Student student = service.findByIdStudent("asds").block();
+		Student student = service.findByIdStudent("5dbfabb219e4126d2a1f96fd").block();
 		
 		client.get().uri("/api/student/{id}", Collections.singletonMap("id", student.getId()))
 		.accept(MediaType.APPLICATION_JSON_UTF8)
