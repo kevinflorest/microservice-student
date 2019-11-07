@@ -49,10 +49,10 @@ public class StudentServiceImpl implements StudentService{
 				else
 				{
 					return sdao.save(student).flatMap(s5 -> {	
-	
+						//172.18.0.5
 						Mono<Family> s6 = WebClient
 								.builder()
-								.baseUrl("http://localhost:8002/api/family/")
+								.baseUrl("http://13.68.220.177:8002/api/family/")
 								.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 								.build().get().uri("/document/"+s5.getNumberDocument()).retrieve()
 								.bodyToMono(Family.class)
