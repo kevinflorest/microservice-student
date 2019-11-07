@@ -13,7 +13,6 @@ import com.sistema.app.exception.ResponseStatus;
 import com.sistema.app.models.Family;
 import com.sistema.app.models.Student;
 import com.sistema.app.services.StudentService;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -50,12 +49,10 @@ public class StudentServiceImpl implements StudentService{
 				else
 				{
 					return sdao.save(student).flatMap(s5 -> {	
-//						wclient1.init();
-//						Mono<Family> s6 = wclient1.findFamily(s5.getNumberDocument()).log();
-						
+	
 						Mono<Family> s6 = WebClient
 								.builder()
-								.baseUrl("http://localhost:8002/api/family/")
+								.baseUrl("http://localhost:9039/api/family/")
 								.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 								.build().get().uri("/document/"+s5.getNumberDocument()).retrieve()
 								.bodyToMono(Family.class)
@@ -96,15 +93,14 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	public Flux<Student> findByNamesLike(String firstName) {
-		return sdao.findByNamesLike(firstName);
+	public Flux<Student> findByNamesRegex(String firstName) {
+		return sdao.findByNamesRegex(firstName);
 	}
 
 	@Override
 	public Mono<Student> findByDateOfBirthBetween(Date from, Date to) {
 		return sdao.findByDateOfBirthBetween(from, to);
 	}
-
 
 
 }

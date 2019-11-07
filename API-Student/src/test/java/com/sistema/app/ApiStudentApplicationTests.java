@@ -1,6 +1,8 @@
 package com.sistema.app;
 
 import java.util.Collections;
+import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +30,29 @@ public class ApiStudentApplicationTests {
 		.exchange()
 		.expectStatus().isOk()
 		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-		.expectBodyList(Student.class);
+		.expectBodyList(Student.class).consumeWith(response -> {
+			List<Student> students = response.getResponseBody();
+			
+			students.forEach(p -> {
+				System.out.println(p.getId());
+			});
+			
+			Assertions.assertThat(students.size()>0).isTrue();
+		});;
 	}
 	
 	@Test
 	public void findByStudent() {
 		
-		Student student = service.findByIdStudent("asds").block();
+		Student student = service.findByIdStudent("5dba014cd75cf84d6c018f97").block();
 		
 		client.get().uri("/api/student/{id}", Collections.singletonMap("id", student.getId()))
 		.accept(MediaType.APPLICATION_JSON_UTF8)
 		.exchange()
 		.expectStatus().isOk()
-		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-		.expectBodyList(Student.class);
+		.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8);
+		
+		
 	}
 	
 	

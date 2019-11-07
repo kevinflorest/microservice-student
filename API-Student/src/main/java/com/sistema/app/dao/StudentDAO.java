@@ -19,7 +19,7 @@ public interface StudentDAO extends ReactiveMongoRepository<Student, String> {
 	Mono<Student> findByNumberDocument(String numberDocument);
 	
 	@Query("{'firstName' : {$regex : ?0 } }")
-	Flux<Student> findByNamesLike(String firstName);
+	Flux<Student> findByNamesRegex(String firstName);
 	
 	@Query("{'dateOfBirth' : {'$gt' : ?0, '$lt' : ?1}}")
 	Mono<Student> findByDateOfBirthBetween(Date from, Date to);

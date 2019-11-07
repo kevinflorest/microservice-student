@@ -21,7 +21,7 @@ public interface StudentService {
 	
 	Mono<Student> findByNumberDocument(String numberDocument);
 	
-	Flux<Student> findByNamesLike(String firstName);
+	Flux<Student> findByNamesRegex(String firstName);
 	
 	Mono<Student> findByDateOfBirthBetween(Date from, Date to);
 	

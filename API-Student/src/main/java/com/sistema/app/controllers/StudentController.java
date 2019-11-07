@@ -19,11 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.support.WebExchangeBindException;
-
 import com.sistema.app.models.Student;
 import com.sistema.app.services.StudentService;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -142,12 +139,12 @@ public class StudentController {
 	}
 	
 	   //Like Names
-	   @GetMapping("likeName/{firstNames}")
-		public Mono<ResponseEntity<Flux<Student>>> viewName(@PathVariable String firstNames){
+	   @GetMapping("likeName/{firstName}")
+		public Mono<ResponseEntity<Flux<Student>>> viewName(@PathVariable String firstName){
 			return Mono.just(
 					ResponseEntity.ok()
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
-					.body(service.findByNamesLike(firstNames))
+					.body(service.findByNamesRegex(firstName))
 					);
 		}
 	   
