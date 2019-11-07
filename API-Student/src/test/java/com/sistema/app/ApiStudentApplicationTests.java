@@ -23,6 +23,11 @@ public class ApiStudentApplicationTests {
 	@Autowired
 	private StudentService service;
 	
+	
+	@Test
+	public void contextLoads() {
+	}
+	
 //	@Test
 //	public void listStudent() {
 //		client.get().uri("/api/student/")
