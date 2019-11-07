@@ -52,7 +52,7 @@ public class StudentServiceImpl implements StudentService{
 	
 						Mono<Family> s6 = WebClient
 								.builder()
-								.baseUrl("http://localhost:9039/api/family/")
+								.baseUrl("http://localhost:8002/api/family/")
 								.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 								.build().get().uri("/document/"+s5.getNumberDocument()).retrieve()
 								.bodyToMono(Family.class)
